@@ -47,7 +47,7 @@ const AttendanceForm = ({
       <CardContent>
         <div className='flex justify-start gap-3 mb-4'>
           <div className="w-[60px]">Nama</div>
-          <div>: {session?.data?.user.name}</div>
+          <div>: {session?.data?.user ? session?.data?.user.name : ''}</div>
         </div>
 
         <div className='flex justify-start gap-3 mb-4'>
