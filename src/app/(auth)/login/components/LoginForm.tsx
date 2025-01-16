@@ -19,7 +19,7 @@ const LoginForm = () => {
         description: state?.message,
       });
     }
-  }, [state?.message])
+  }, [state?.message, toast])
 
   return (
     <form action={formAction}>

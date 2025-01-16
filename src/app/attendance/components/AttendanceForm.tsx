@@ -2,13 +2,13 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog"
+import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog"
 import Timer from "./Timer"
 import WebcamCapture from "./WebcamCapture"
 import { useSession } from "next-auth/react"
 import { useState } from "react"
-import Image from 'next/image'
 import moment from "moment"
+import Image from "next/image"
 
 const AttendanceForm = ({
   currentDate
@@ -66,7 +66,7 @@ const AttendanceForm = ({
               <Button variant="outline" className="w-full h-[130px]">
                 <div className="w-full h-full overflow-hidden flex flex-col items-center justify-start space-y-2">
                   <div className="w-full h-full flex items-center justify-center space-x-2 overflow-hidden">
-                    <img
+                    <Image
                       src={imgUri !== '' ? imgUri : '/assets/images/selfie.png'}
                       alt="camera"
                       className={`h-full ${imgUri === '' ? 'opacity-40' : ''}`}
@@ -76,6 +76,7 @@ const AttendanceForm = ({
                 </div>
               </Button>
             </DialogTrigger>
+
             <DialogContent>
               {/* <DialogHeader>
                   <DialogTitle>Foto Selfie</DialogTitle>

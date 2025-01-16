@@ -22,7 +22,7 @@ const WebcamCapture = ({
       const imageSrc = webcamRef.current.getScreenshot();
       onCapture(imageSrc);
     },
-    [webcamRef]
+    [webcamRef, onCapture]
   );
 
   return (

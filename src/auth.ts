@@ -48,7 +48,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
 
         const {
-          password: pass, ...userWithPassword
+          password: __, ...userWithPassword
         } = user;
 
         // return user object with their profile data

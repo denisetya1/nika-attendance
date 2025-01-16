@@ -20,7 +20,7 @@ const RegisterPage = () => {
         description: state?.message,
       });
     }
-  }, [state?.message])
+  }, [state?.message, toast])
 
   return (
     <div className='w-full h-full flex flex-col items-center justify-center'>

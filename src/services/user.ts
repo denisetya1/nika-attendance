@@ -6,7 +6,6 @@ import { hashSync } from "bcrypt-ts";
 import { AuthError } from "next-auth";
 import { signIn } from "@/auth";
 import { redirect } from "next/navigation";
-import { isRedirectError } from "next/dist/client/components/redirect";
 
 export const addUser = async (prevState: unknown, formData: FormData) => {
 
@@ -21,7 +20,7 @@ export const addUser = async (prevState: unknown, formData: FormData) => {
   const { name, email, password } = validateFields.data;
 
   try {
-    const user = await prisma.user.create({
+    await prisma.user.create({
       data: {
         name,
         email,
