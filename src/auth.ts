@@ -51,6 +51,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           password: __, ...userWithPassword
         } = user;
 
+
+        console.log('disini', userWithPassword)
+
         // return user object with their profile data
         return userWithPassword
       },
@@ -58,12 +61,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
-      console.log(auth)
       const isLoggedIn = !!auth?.user;
       const protectedRoute = [
         "/attendance",
         "/dashboard"
       ];
+
+      // if (!isLoggedIn && nextUrl.pathname === "/") {
+      //   return Response.redirect(new URL("/login", nextUrl));
+      // }
 
       if (!isLoggedIn && protectedRoute.includes(nextUrl.pathname)) {
         return Response.redirect(new URL("/login", nextUrl));
@@ -73,7 +79,26 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return Response.redirect(new URL("/attendance", nextUrl));
       }
 
+      // if (isLoggedIn && nextUrl.pathname === "/") {
+      //   return Response.redirect(new URL("/attendance", nextUrl));
+      // }
+
       return true
-    }
+    },
+    async session({ session, token }) {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.sub
+        }
+      };
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.user = user;
+      }
+      return token;
+    },
   }
 })

@@ -6,6 +6,8 @@ import { hashSync } from "bcrypt-ts";
 import { AuthError } from "next-auth";
 import { signIn } from "@/auth";
 import { redirect } from "next/navigation";
+import { isRedirectError, RedirectType } from "next/dist/client/components/redirect";
+import { revalidatePath } from "next/cache";
 
 export const addUser = async (prevState: unknown, formData: FormData) => {
 
@@ -51,10 +53,8 @@ export const loginUser = async (prevState: unknown, formData: FormData) => {
   const { email, password } = validateFields.data;
 
   try {
-    await signIn("credentials", { email, password, redirectTo: "/attendance" });
+    await signIn("credentials", { email, password, redirectTo: '/' });
   } catch (error) {
-    console.error('signin erorr', error);
-
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
@@ -68,6 +68,12 @@ export const loginUser = async (prevState: unknown, formData: FormData) => {
       }
     }
 
-    throw error
+    if (isRedirectError(error)) {
+      throw error
+    }
+
+    console.error('signin erorr', error);
   }
+
+  redirect("/", RedirectType.replace);
 }
