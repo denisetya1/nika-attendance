@@ -31,28 +31,24 @@ export const recordAttendance = async (prevState: unknown, formData: FormData) =
   const imageUpload = formData.get('img')?.toString();
 
   if (imageUpload && session?.user) {
-    let parts = imageUpload.split(';');
-    let mimType = parts[0].split(':')[1];
-    let imageData = parts[1].split(',')[1];
+    const parts = imageUpload.split(';');
+    const mimType = parts[0].split(':')[1];
+    const imageData = parts[1].split(',')[1];
 
-    var img = Buffer.from(imageData, 'base64');
+    const img = Buffer.from(imageData, 'base64');
 
     const newSize = await sharp(img)
       .resize(200, 200, { fit: 'outside' })
       .toBuffer()
       .then(resizedImageBuffer => {
-        let resizedImageData = resizedImageBuffer.toString('base64');
-        let resizedBase64 = `data:${mimType};base64,${resizedImageData}`;
+        const resizedImageData = resizedImageBuffer.toString('base64');
+        const resizedBase64 = `data:${mimType};base64,${resizedImageData}`;
         return resizedBase64
       }).catch((error) => {
         console.error('signin erorr', error);
 
         throw error
       })
-
-    const time = moment();
-    const idTime = time.tz('Asia/Jakarta').toISOString();
-
     try {
       await prisma.attendaceRecord.create({
         data: {
@@ -63,7 +59,6 @@ export const recordAttendance = async (prevState: unknown, formData: FormData) =
         }
       })
     } catch (error) {
-      // console.error('signin erorr', error);
 
       throw error
     }
