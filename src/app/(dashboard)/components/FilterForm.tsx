@@ -40,7 +40,7 @@ const FilterForm = ({
 
     router.push('?' + query)
     router.refresh()
-  }, [selectedMonth, selectedYear, selectedUserId])
+  }, [selectedMonth, selectedYear, selectedUserId, router])
 
   return (
     <div className='w-full'>
