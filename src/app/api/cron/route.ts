@@ -3,9 +3,14 @@ import moment from 'moment';
 import { NextApiResponse } from 'next';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(req: NextRequest, res: NextApiResponse) {
+export async function GET(req: NextRequest) {
   if (req.headers.get('Authorization') !== `Bearer ${process.env.CRON_SECRET}`) {
-    return res.status(401).end('Unauthorized');
+    return NextResponse.json({
+      code: "UNATHORIZED",
+      message: "Unathorized Error!"
+    }, {
+      status: 401
+    });
   }
 
   const noCheckout = await prisma.attendaceRecord.findMany({

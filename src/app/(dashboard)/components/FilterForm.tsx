@@ -43,67 +43,65 @@ const FilterForm = ({
   }, [selectedMonth, selectedYear, selectedUserId])
 
   return (
-    <div className=''>
-      <div>
-        <div className='flex gap-2 mb-4'>
-          <div className='w-[140px]'>Nama Karyawan</div>
-          <div className='w-[300px] flex gap-2 items-center'>: <Select defaultValue={userId} value={selectedUserId} onValueChange={(value) => setSelectedUserId(value)}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Pilih karyawan" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Pilih Karyawan</SelectLabel>
-                {employees?.map((emp) => <SelectItem key={emp.id} value={emp.id as string}>{emp.name}</SelectItem>)}
-              </SelectGroup>
-            </SelectContent>
-          </Select></div>
-        </div>
-
-        <div className='flex gap-2 mb-4'>
-          <div className='w-[140px]'>Bulan</div>
-          <div className='w-[200px] flex gap-2 items-center'>: <Select defaultValue={month} value={selectedMonth} onValueChange={(value) => setSelectedMonth(value)}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Pilih bulan" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Bulan</SelectLabel>
-                <SelectItem value="01">Januari</SelectItem>
-                <SelectItem value="02">Februari</SelectItem>
-                <SelectItem value="03">Maret</SelectItem>
-                <SelectItem value="04">April</SelectItem>
-                <SelectItem value="05">Mei</SelectItem>
-                <SelectItem value="06">Juni</SelectItem>
-                <SelectItem value="07">Juli</SelectItem>
-                <SelectItem value="08">Agustus</SelectItem>
-                <SelectItem value="09">September</SelectItem>
-                <SelectItem value="10">Oktober</SelectItem>
-                <SelectItem value="11">November</SelectItem>
-                <SelectItem value="12">Desember</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-            <Select defaultValue={year} value={selectedYear} onValueChange={(value) => setSelectedYear(value)}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Pilih tahun" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Tahun</SelectLabel>
-                  {[...new Array(endYear - startYear + 1)].map((val, idx) => <SelectItem key={idx} value={String(startYear + idx)}>{startYear + idx}</SelectItem>)}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        <div className='flex gap-2 mb-4'>
-          <div className='w-[140px]'>Jumlah Hari Kerja</div>
-          <div className='w-[140px]'>: {totalDays} hari</div>
+    <div className='w-full'>
+      <div className='w-full flex justify-between items-center gap-2 mb-4'>
+        <div className='w-1/2'>Nama Karyawan</div>
+        <div className='w-1/2 flex gap-2 items-center'>: <Select defaultValue={userId} value={selectedUserId} onValueChange={(value) => setSelectedUserId(value)}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Pilih karyawan" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Pilih Karyawan</SelectLabel>
+              {employees?.map((emp) => <SelectItem key={emp.id} value={emp.id as string}>{emp.name}</SelectItem>)}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
         </div>
       </div>
 
+      <div className='flex gap-2 mb-4 items-center'>
+        <div className='w-1/2'>Bulan</div>
+        <div className='w-1/2 flex gap-2 items-center'>: <Select defaultValue={month} value={selectedMonth} onValueChange={(value) => setSelectedMonth(value)}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Pilih bulan" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Bulan</SelectLabel>
+              <SelectItem value="01">Januari</SelectItem>
+              <SelectItem value="02">Februari</SelectItem>
+              <SelectItem value="03">Maret</SelectItem>
+              <SelectItem value="04">April</SelectItem>
+              <SelectItem value="05">Mei</SelectItem>
+              <SelectItem value="06">Juni</SelectItem>
+              <SelectItem value="07">Juli</SelectItem>
+              <SelectItem value="08">Agustus</SelectItem>
+              <SelectItem value="09">September</SelectItem>
+              <SelectItem value="10">Oktober</SelectItem>
+              <SelectItem value="11">November</SelectItem>
+              <SelectItem value="12">Desember</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+          <Select defaultValue={year} value={selectedYear} onValueChange={(value) => setSelectedYear(value)}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Pilih tahun" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Tahun</SelectLabel>
+                {[...new Array(endYear - startYear + 1)].map((val, idx) => <SelectItem key={idx} value={String(startYear + idx)}>{startYear + idx}</SelectItem>)}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      <div className='flex gap-2 mb-4 items-center'>
+        <div className='w-1/2'>Jumlah Hari Kerja</div>
+        <div className='w-1/2'>: {totalDays} hari</div>
+      </div>
     </div>
   )
 }

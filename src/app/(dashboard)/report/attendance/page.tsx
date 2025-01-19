@@ -175,7 +175,7 @@ const AttendaceReport = async ({
           <Card className='mb-10'>
             <CardHeader></CardHeader>
             <CardContent>
-              <div className='flex justify-between'>
+              <div className='flex flex-col md:flex-row md:justify-between md:gap-20'>
                 <div className='w-1/2'>
                   <FilterForm
                     employees={listEmployees}
@@ -186,19 +186,19 @@ const AttendaceReport = async ({
                 </div>
 
                 <div className='w-1/2'>
-                  <div className='flex gap-2 py-1 mb-4'>
-                    <div className='w-[170px]'>Total Masuk</div>
-                    <div>: {totalAttendance} hari</div>
+                  <div className='flex items-center gap-2 py-1 mb-4'>
+                    <div className='w-1/2'>Jumlah Masuk</div>
+                    <div className='w-1/2'>: {totalAttendance} hari</div>
                   </div>
 
-                  <div className='flex gap-2 py-1 mb-4'>
-                    <div className='w-[170px]'>Total Terlambat</div>
-                    <div>: {totalLate} kali</div>
+                  <div className='flex items-center gap-2 py-1 mb-4'>
+                    <div className='w-1/2'>Jumlah Terlambat</div>
+                    <div className='w-1/2'>: {totalLate} kali</div>
                   </div>
 
-                  <div className='flex gap-2 py-1 mb-4'>
-                    <div className='w-[170px]'>Total Libur</div>
-                    <div>: {totalAbsent} hari</div>
+                  <div className='flex items-center gap-2 py-1 mb-4'>
+                    <div className='w-1/2'>Jumlah Libur</div>
+                    <div className='w-1/2'>: {totalAbsent} hari</div>
                   </div>
                 </div>
               </div>

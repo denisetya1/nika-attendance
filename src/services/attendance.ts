@@ -23,11 +23,11 @@ export const getAttendance = async () => {
   return attendance;
 }
 
-export const recordAttendance = async (prevState: unknown, formData: FormData) => {
+export const checkInAttendance = async (prevState: unknown, formData: FormData) => {
   const session = await auth();
   const imageUpload = formData.get('img')?.toString();
 
-  if (imageUpload && session?.user) {
+  if (imageUpload && session?.id) {
     const parts = imageUpload.split(';');
     const mimType = parts[0].split(':')[1];
     const imageData = parts[1].split(',')[1];
@@ -42,14 +42,15 @@ export const recordAttendance = async (prevState: unknown, formData: FormData) =
         const resizedBase64 = `data:${mimType};base64,${resizedImageData}`;
         return resizedBase64
       }).catch((error) => {
-        console.error('signin erorr', error);
+        console.error('resize image', error);
 
         throw error
       })
+
     try {
       await prisma.attendaceRecord.create({
         data: {
-          userId: session.user.id as string,
+          userId: session.id as string,
           dateString: moment().format("YYYY-MM-DD"),
           checkInTime: new Date(),
           checkInTimeString: moment().tz('Asia/Jakarta').format("HH:mm:ss"),
@@ -77,7 +78,7 @@ export const checkOutAttendance = async (prevState: unknown, formData: FormData)
     await prisma.attendaceRecord.update({
       where: {
         id: attId as string,
-        userId: session?.user?.id as string
+        userId: session?.id as string
       },
       data: {
         checkOutTime: new Date(),

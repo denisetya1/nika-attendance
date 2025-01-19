@@ -5,13 +5,11 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Dialog, DialogTrigger, DialogContent, DialogHeader } from "@/components/ui/dialog"
 import Timer from "./Timer"
 import WebcamCapture from "./WebcamCapture"
-import { useSession } from "next-auth/react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import moment from "moment"
 import Image from "next/image"
-import { recordAttendance } from "@/services/attendance"
+import { checkInAttendance } from "@/services/attendance"
 import { useFormState } from "react-dom"
-import { DialogTitle } from "@radix-ui/react-dialog"
 
 const AttendanceForm = ({
   currentDate,
@@ -20,7 +18,7 @@ const AttendanceForm = ({
   currentDate: Date,
   name: string
 }) => {
-  const [__state, formAction] = useFormState(recordAttendance, null);
+  const [__state, formAction] = useFormState(checkInAttendance, null);
   const [openDialog, setOpenDialog] = useState<boolean>(false)
   const [imgUri, setImagUri] = useState<string>('')
 
