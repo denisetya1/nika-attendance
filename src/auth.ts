@@ -4,6 +4,7 @@ import { prisma } from "./lib/db"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { loginSchema } from "./lib/zod/user"
 import { compareSync } from "bcrypt-ts"
+import { getToken } from "@auth/core/jwt"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -48,56 +49,57 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
 
         const {
-          password: __, ...userWithPassword
+          password: __, ...userWithoutPassword
         } = user;
 
-
-        console.log('disini', userWithPassword)
-
         // return user object with their profile data
-        return userWithPassword
+        return userWithoutPassword
       },
     }),
   ],
   callbacks: {
-    authorized({ auth, request: { nextUrl } }) {
+    async authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
+      const isAdmin = auth?.role === 'admin';
+
       const protectedRoute = [
         "/attendance",
-        "/dashboard"
       ];
 
-      // if (!isLoggedIn && nextUrl.pathname === "/") {
-      //   return Response.redirect(new URL("/login", nextUrl));
-      // }
+      const adminRoute = [
+        "/report/attendance"
+      ]
 
-      if (!isLoggedIn && protectedRoute.includes(nextUrl.pathname)) {
-        return Response.redirect(new URL("/login", nextUrl));
+      if (isLoggedIn && isAdmin && adminRoute.includes(nextUrl.pathname)) {
+        return true;
+      }
+
+      if (isLoggedIn && !isAdmin && adminRoute.includes(nextUrl.pathname)) {
+        return Response.redirect(new URL("/", nextUrl));
       }
 
       if (isLoggedIn && nextUrl.pathname.startsWith("/login")) {
-        return Response.redirect(new URL("/attendance", nextUrl));
+        if (isAdmin)
+          return Response.redirect(new URL("/report/attendance", nextUrl));
+        else
+          return Response.redirect(new URL("/attendance", nextUrl));
       }
 
-      // if (isLoggedIn && nextUrl.pathname === "/") {
-      //   return Response.redirect(new URL("/attendance", nextUrl));
-      // }
+      if (!isLoggedIn && (protectedRoute.includes(nextUrl.pathname)) || adminRoute.includes(nextUrl.pathname)) {
+        return Response.redirect(new URL("/login", nextUrl));
+      }
 
       return true
     },
     async session({ session, token }) {
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          id: token.sub
-        }
-      };
+      return { ...session, ...token }
     },
     async jwt({ token, user }) {
       if (user) {
-        token.user = user;
+        token.id = user.id;
+        token.role = user.role;
       }
+
       return token;
     },
   }

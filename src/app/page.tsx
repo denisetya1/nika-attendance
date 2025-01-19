@@ -3,8 +3,19 @@ import { redirect } from 'next/navigation'
 
 const Home = async () => {
   const session = await auth();
+  console.log('aaaa', session, session?.role)
+
   if (session?.user) {
-    redirect('/attendance?r=1')
+    console.log('masuk sini')
+    if (session?.role === 'admin') {
+      console.log('lalu sini')
+      redirect('/report/attendance')
+    } else {
+      console.log('atau sini')
+      redirect('/attendance')
+    }
+  } else {
+    redirect('/login')
   }
 
   return (
