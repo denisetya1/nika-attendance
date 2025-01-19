@@ -56,11 +56,16 @@ const AttendaceReport = async ({
   const listEmployees = await getEmployees();
 
   const getDuration = (dateString?: string, checkInTimeString?: string, checkOutTimeString?: string | null) => {
-    const duration = moment(`${dateString} ${checkOutTimeString}`).diff(moment(`${dateString} ${checkInTimeString}`), 'minutes')
-    const hours = Math.floor(duration / 60);
-    const minutes = duration - (hours * 60);
+    let hours = 0;
+    let minutes = 0;
+    if (checkOutTimeString) {
+      const duration = moment(`${dateString} ${checkOutTimeString}`).diff(moment(`${dateString} ${checkInTimeString}`), 'minutes')
+      hours = Math.floor(duration / 60);
+      minutes = duration - (hours * 60);
+    }
 
     return { hours, minutes }
+
   }
 
   const getLate = (dateString?: string, checkInTimeString?: string) => {
@@ -263,7 +268,7 @@ const AttendaceReport = async ({
                   <TableCell>{att.dateString}</TableCell>
                   <TableCell>{att.checkInTimeString}</TableCell>
                   <TableCell>{att.checkOutTimeString}</TableCell>
-                  <TableCell>{att?.isAbsent ? '' : `${att?.duration?.hours} jam ${att?.duration?.minutes} menit`}</TableCell>
+                  <TableCell>{att?.isAbsent || !att.checkOutTimeString ? '' : `${att?.duration?.hours} jam ${att?.duration?.minutes} menit`}</TableCell>
                   <TableCell className={`${att.isLate ? 'text-red-500' : ''}`}>{att?.isAbsent ? '' : `${att?.lateDuration?.hours} jam ${att?.lateDuration?.minutes} menit`}</TableCell>
                 </TableRow>
               })}
