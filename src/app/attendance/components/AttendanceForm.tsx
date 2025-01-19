@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog"
+import { Dialog, DialogTrigger, DialogContent, DialogHeader } from "@/components/ui/dialog"
 import Timer from "./Timer"
 import WebcamCapture from "./WebcamCapture"
 import { useSession } from "next-auth/react"
@@ -11,6 +11,7 @@ import moment from "moment"
 import Image from "next/image"
 import { recordAttendance } from "@/services/attendance"
 import { useFormState } from "react-dom"
+import { DialogTitle } from "@radix-ui/react-dialog"
 
 const AttendanceForm = ({
   currentDate,
@@ -32,21 +33,23 @@ const AttendanceForm = ({
     <form className="w-full h-full flex items-center justify-center" action={formAction} >
       <Card className='w-[90%]'>
         <CardHeader>
-          <CardTitle>Rekam Absensi Masuk</CardTitle>
+          <CardTitle className="text-center mb-5">
+            <h1>Rekam Absensi Masuk (Check In)</h1>
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className='flex justify-start gap-3 mb-4'>
-            <div className="w-[60px]">Nama</div>
+            <div className="w-[120px]">Nama</div>
             <div>: {name}</div>
           </div>
 
           <div className='flex justify-start gap-3 mb-4'>
-            <div className="w-[60px]">Tanggal</div>
+            <div className="w-[120px]">Tanggal</div>
             <div className="flex">: {moment(currentDate).format('LL')}</div>
           </div>
 
           <div className='flex justify-start gap-3 mb-4'>
-            <div className="w-[60px]">Jam</div>
+            <div className="w-[120px]">Waktu Check In</div>
             <div className="flex"><div>:&nbsp;</div><Timer serverDate={currentDate} /></div>
           </div>
 
@@ -55,14 +58,20 @@ const AttendanceForm = ({
               <DialogTrigger asChild>
                 <Button variant="outline" className="w-full h-[130px]">
                   <div className="w-full h-full overflow-hidden flex flex-col items-center justify-start space-y-2">
-                    <div className="w-full h-full flex items-center justify-center space-x-2 overflow-hidden">
-                      <Image
-                        src={imgUri !== '' ? imgUri : '/assets/images/selfie.png'}
+                    <div className="w-full h-full flex items-center justify-center space-x-2 overflow-hidden relative">
+                      {imgUri && <Image
+                        fill
+                        objectFit="contain"
+                        src={imgUri}
+                        alt="photo"
+                      />}
+                      {imgUri === '' && <Image
+                        src='/assets/images/selfie.png'
                         alt="camera"
                         className={`h-full ${imgUri === '' ? 'opacity-40' : ''}`}
                         width={80}
                         height={50}
-                      />
+                      />}
                       <input type="hidden" name="img" value={imgUri} />
                     </div>
                     <div className="font-bold opacity-40">{imgUri === '' ? 'Ambil Foto' : 'Ulangi'}</div>
@@ -70,7 +79,7 @@ const AttendanceForm = ({
                 </Button>
               </DialogTrigger>
 
-              <DialogContent>
+              <DialogContent className="p-0">
                 <div className="w-full h-full">
                   <WebcamCapture
                     onCapture={(imgUri: string) => handleCapture(imgUri)}

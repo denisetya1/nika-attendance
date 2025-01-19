@@ -28,15 +28,18 @@ model User {
 }
 
 model AttendaceRecord {
-  id           String    @id @default(cuid()) @map("id")
-  userId       String    @map("user_id")
-  date         DateTime  @map("date")
-  checkInTime  DateTime  @map("check_in_time")
-  checkOutTime DateTime? @map("check_out_time")
-  photoUrl     String?   @map("photo_url") @db.Text
-  createdAt    DateTime  @default(now()) @map("created_at")
-  updatedAt    DateTime  @updatedAt @map("updated_at")
-  user         User      @relation(fields: [userId], references: [id])
+  id                 String    @id @default(cuid()) @map("id")
+  userId             String    @map("user_id")
+  dateString         String    @map("date_string")
+  checkInTime        DateTime  @map("check_in_time")
+  checkInTimeString  String    @map("check_in_time_str")
+  checkOutTime       DateTime? @map("check_out_time")
+  checkOutTimeString String?   @map("check_out_time_str")
+  photoUrl           String    @map("photo_url") @db.Text
+  createdAt          DateTime  @default(now()) @map("created_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+  user               User      @relation(fields: [userId], references: [id])
 
+  @@index([dateString, userId])
   @@map("attendace_records")
 }

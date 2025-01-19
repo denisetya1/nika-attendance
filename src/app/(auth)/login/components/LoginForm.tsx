@@ -34,7 +34,7 @@ const LoginForm = () => {
         <div className='text-red-500 text-sm'>{state?.errors?.password}</div>
       </div>
       <div className='p-2 mb-2 w-full text-center'>
-        <Button>Login</Button>
+        <Button className='w-full' variant="default">Login</Button>
       </div>
     </form>
   )

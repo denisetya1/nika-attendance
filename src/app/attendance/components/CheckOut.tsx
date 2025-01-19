@@ -26,7 +26,9 @@ const CheckOut = ({
 
     <Card className='w-[90%]'>
       <CardHeader>
-        <CardTitle>Rekam Absensi Keluar</CardTitle>
+        <CardTitle className="text-center mb-5">
+          <h1>Rekam Absensi Keluar (Check Out)</h1>
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <div className='flex justify-start gap-3 mb-4'>
@@ -51,9 +53,6 @@ const CheckOut = ({
 
         <div className='flex justify-start gap-3 mb-4 w-full'>
           <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-            {/* <DialogTrigger asChild>
-                <Button variant="outline">Share</Button>
-              </DialogTrigger> */}
             <DialogContent className="sm:max-w-md">
               <DialogHeader>
                 <DialogTitle>Konfirmasi Check Out</DialogTitle>
@@ -74,7 +73,7 @@ const CheckOut = ({
                 </DialogClose>
 
                 <DialogClose asChild>
-                  <Button type="button" variant="secondary">
+                  <Button type="button" variant="default">
                     Batal
                   </Button>
                 </DialogClose>

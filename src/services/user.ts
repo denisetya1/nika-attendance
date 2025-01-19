@@ -7,7 +7,24 @@ import { AuthError } from "next-auth";
 import { signIn } from "@/auth";
 import { redirect } from "next/navigation";
 import { isRedirectError, RedirectType } from "next/dist/client/components/redirect";
-import { revalidatePath } from "next/cache";
+
+export const getEmployees = async () => {
+  const employees = await prisma.user.findMany({
+    where: {
+      role: "employee",
+    },
+    orderBy: {
+      name: 'asc'
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true
+    }
+  })
+
+  return employees;
+}
 
 export const addUser = async (prevState: unknown, formData: FormData) => {
 

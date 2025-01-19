@@ -26,7 +26,7 @@ const WebcamCapture = ({
   );
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center relative">
       <Webcam
         audio={false}
         height={720}
@@ -35,8 +35,10 @@ const WebcamCapture = ({
         width={1280}
         videoConstraints={videoConstraints}
       />
-      <div className="mt-4">
-        <Button variant="outline" onClick={capture}>Ambil Foto</Button>
+      <div className="mt-4 absolute bottom-[20px]">
+        <div className="p-2 rounded-full overflow-hidden border-[1px] border-white">
+          <Button className="rounded-full w-[40px] h-[40px]" variant="default" onClick={capture}></Button>
+        </div>
       </div>
     </div>
   );
