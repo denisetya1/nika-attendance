@@ -11,7 +11,7 @@ export const getAttendance = async () => {
 
   const attendance = prisma.attendaceRecord.findFirst({
     where: {
-      userId: session?.user?.id,
+      userId: session?.id,
       dateString: moment.tz("Asia/Jakarta").format("YYYY-MM-DD"),
       checkOutTime: null
     },
