@@ -12,7 +12,7 @@ export const getAttendance = async () => {
   const attendance = prisma.attendaceRecord.findFirst({
     where: {
       userId: session?.id,
-      dateString: moment.tz("Asia/Jakarta").format("YYYY-MM-DD"),
+      dateString: moment().tz("Asia/Jakarta").format("YYYY-MM-DD"),
       checkOutTime: null
     },
     orderBy: {
@@ -51,7 +51,7 @@ export const checkInAttendance = async (prevState: unknown, formData: FormData) 
       await prisma.attendaceRecord.create({
         data: {
           userId: session.id as string,
-          dateString: moment().format("YYYY-MM-DD"),
+          dateString: moment().tz("Asia/Jakarta").format("YYYY-MM-DD"),
           checkInTime: new Date(),
           checkInTimeString: moment().tz('Asia/Jakarta').format("HH:mm:ss"),
           photoUrl: newSize,
