@@ -8,6 +8,7 @@ const LogoutButton = () => {
 
   return (
     <Button
+      variant="outline"
       onClick={() => signOut()}
     >
       Logout

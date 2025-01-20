@@ -1,5 +1,6 @@
 "use client";
 
+import ButtonIndicator from '@/components/ButtonIndicator';
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -52,7 +53,12 @@ const RegisterPage = () => {
               <div className='text-red-500 text-sm'>{state?.errors?.confirmPassword}</div>
             </div>
             <div className='p-2 mb-2 w-full text-center'>
-              <Button>Daftar</Button>
+              <ButtonIndicator
+                className="w-full p-8"
+                type="submit"
+                text="Daftar"
+                pendingText="Memproses..."
+              />
             </div>
           </form>
         </div>

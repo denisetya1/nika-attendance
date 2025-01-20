@@ -9,6 +9,8 @@ import moment from "moment"
 import { checkOutAttendance } from "@/services/attendance"
 import { useFormState } from "react-dom"
 import { AttendaceRecord } from "@prisma/client"
+import { CheckCircle } from "lucide-react"
+import ButtonIndicator from "@/components/ButtonIndicator"
 
 const CheckOut = ({
   attendace,
@@ -31,6 +33,13 @@ const CheckOut = ({
         </CardTitle>
       </CardHeader>
       <CardContent>
+
+        <div className="flex justify-center items-center mb-5">
+          <div className="text-green-500 p-4 border-[1px] border-green-400 rounded-lg">
+            <CheckCircle size={100} />
+          </div>
+        </div>
+
         <div className='flex justify-start gap-3 mb-4'>
           <div className="w-[130px]">Nama</div>
           <div>: {name}</div>
