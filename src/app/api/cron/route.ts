@@ -1,6 +1,5 @@
 import { prisma } from '@/lib/db';
 import moment from 'moment';
-import { NextApiResponse } from 'next';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
@@ -30,7 +29,7 @@ export async function GET(req: NextRequest) {
             id: data.id,
           },
           data: {
-            checkInTimeString: "16:00:00",
+            checkOutTimeString: "16:00:00",
             checkOutTime: new Date(`${data.dateString} 16:00:00`)
           }
         })
@@ -40,7 +39,7 @@ export async function GET(req: NextRequest) {
             id: data.id,
           },
           data: {
-            checkInTimeString: "21:00:00",
+            checkOutTimeString: "21:00:00",
             checkOutTime: new Date(`${data.dateString} 21:00:00`)
           }
         })
