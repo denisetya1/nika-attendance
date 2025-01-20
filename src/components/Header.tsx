@@ -8,7 +8,7 @@ const Header = async () => {
 
   return (
     <div className='header fixed top-0 left-0 w-full p-6 border-b-[1px] border-s-slate-500 bg-white
-        flex items-center justify-between md:justify-end md:gap-3
+        flex items-center justify-between md:justify-end md:gap-3 z-10 shadow-sm
       '>
       <AccountInfo session={session} />
       <LogoutButton />
