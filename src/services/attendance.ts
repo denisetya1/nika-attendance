@@ -3,8 +3,8 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/db";
 import moment from "moment-timezone";
-import sharp from 'sharp';
 import { redirect } from "next/navigation";
+import { resizeBase64 } from "@/lib/image";
 
 export const getAttendance = async () => {
   const session = await auth();
@@ -28,24 +28,7 @@ export const checkInAttendance = async (prevState: unknown, formData: FormData) 
   const imageUpload = formData.get('img')?.toString();
 
   if (imageUpload && session?.id) {
-    const parts = imageUpload.split(';');
-    const mimType = parts[0].split(':')[1];
-    const imageData = parts[1].split(',')[1];
-
-    const img = Buffer.from(imageData, 'base64');
-
-    const newSize = await sharp(img)
-      .resize(200, 200, { fit: 'outside' })
-      .toBuffer()
-      .then(resizedImageBuffer => {
-        const resizedImageData = resizedImageBuffer.toString('base64');
-        const resizedBase64 = `data:${mimType};base64,${resizedImageData}`;
-        return resizedBase64
-      }).catch((error) => {
-        console.error('resize image', error);
-
-        throw error
-      })
+    const newSize = await resizeBase64(imageUpload)
 
     try {
       await prisma.attendaceRecord.create({
@@ -73,27 +56,37 @@ export const checkOutAttendance = async (prevState: unknown, formData: FormData)
   const session = await auth();
 
   const attId = formData.get('attId')
+  const imageUpload = formData.get('img')?.toString();
 
-  try {
-    await prisma.attendaceRecord.update({
-      where: {
-        id: attId as string,
-        userId: session?.id as string
-      },
-      data: {
-        checkOutTime: new Date(),
-        checkOutTimeString: moment().tz('Asia/Jakarta').format("HH:mm:ss"),
-      }
-    })
-  } catch (error) {
-    throw error
+  if (imageUpload && attId) {
+    const newSize = await resizeBase64(imageUpload)
+
+    try {
+      await prisma.attendaceRecord.update({
+        where: {
+          id: attId as string,
+          userId: session?.id as string
+        },
+        data: {
+          checkOutTime: new Date(),
+          checkOutTimeString: moment().tz('Asia/Jakarta').format("HH:mm:ss"),
+          photoUrlCheckout: newSize
+        }
+      })
+    } catch (error) {
+      throw error
+    }
+
+    redirect('/')
+
+  } else {
+    return {
+      message: "Terjadi kesalahan!"
+    }
   }
-
-  redirect('/')
 }
 
 export const getListAttendance = async (month?: string, year?: string, userId?: string) => {
-
   month = month || moment().format('MM')
   year = year || moment().format('YYYY')
   userId = userId || '0'
@@ -116,6 +109,7 @@ export const getListAttendance = async (month?: string, year?: string, userId?: 
       checkInTimeString: true,
       checkOutTimeString: true,
       photoUrl: true,
+      photoUrlCheckout: true, //
       user: {
         select: {
           id: true,

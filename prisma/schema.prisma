@@ -11,6 +11,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  // directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -22,6 +23,7 @@ model User {
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
   attendaceRecords AttendaceRecord[]
+  forgotPassword   ForgotPassword[]
 
   @@map("users")
 }
@@ -35,10 +37,25 @@ model AttendaceRecord {
   checkOutTime       DateTime? @map("check_out_time")
   checkOutTimeString String?   @map("check_out_time_str")
   photoUrl           String    @map("photo_url") @db.Text
+  photoUrlCheckout   String?   @map("photo_url_checkout") @db.Text
   createdAt          DateTime  @default(now()) @map("created_at")
   updatedAt          DateTime  @updatedAt @map("updated_at")
   user               User      @relation(fields: [userId], references: [id])
 
   @@index([dateString, userId])
   @@map("attendace_records")
+}
+
+model ForgotPassword {
+  id        String   @id @default(cuid()) @map("id")
+  userId    String   @map("user_id")
+  trxId     String   @map("trx_id")
+  token     String   @map("token")
+  expires   DateTime @map("expires")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([trxId, token])
+  @@map("forgot_password")
 }

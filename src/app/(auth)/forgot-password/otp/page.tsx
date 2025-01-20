@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { User2Icon } from 'lucide-react';
-import ForgotPasswordForm from './components/ForgotPasswordForm';
+import OTPForm from '../components/OTPForm';
 
 const ForgotPassword = () => {
 
@@ -11,13 +11,13 @@ const ForgotPassword = () => {
           <CardTitle>
             <div className='w-full text-center flex flex-col items-center justify-center gap-5'>
               <div className='p-3 rounded-full bg-secondary'><User2Icon size={50} /></div>
-              <h1 className='font-bold'>Lupa Pasword?</h1>
+              <h1 className='font-bold'>Verifikasi OTP</h1>
             </div>
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div>
-            <ForgotPasswordForm />
+            <OTPForm />
           </div>
         </CardContent>
       </Card>

@@ -21,6 +21,7 @@ type AttendaceRecord = Prisma.AttendaceRecordGetPayload<{
     checkInTimeString: true,
     checkOutTimeString: true,
     photoUrl: true,
+    photoUrlCheckout: true,
     user: {
       select: {
         id: true,
@@ -192,12 +193,12 @@ const AttendaceReport = async ({
 
                 <div className='w-1/2'>
                   <div className='flex items-center gap-2 py-1 mb-4'>
-                    <div className='w-1/2'>Jumlah Masuk</div>
+                    <div className='w-1/2'>Jumlah Masuk Kerja</div>
                     <div className='w-1/2'>: {totalAttendance} hari</div>
                   </div>
 
                   <div className='flex items-center gap-2 py-1 mb-4'>
-                    <div className='w-1/2'>Jumlah Terlambat</div>
+                    <div className='w-1/2'>Jumlah Terlambat &gt; 5 mnt</div>
                     <div className='w-1/2'>: {totalLate} kali</div>
                   </div>
 
@@ -215,7 +216,6 @@ const AttendaceReport = async ({
             <TableHeader>
               <TableRow className='bg-slate-300'>
                 <TableHead className="w-[100px] text-sm font-semibold text-gray-800">No.</TableHead>
-                <TableHead className='text-sm font-semibold text-gray-800'>Photo</TableHead>
                 <TableHead className='text-sm font-semibold text-gray-800'>Tanggal</TableHead>
                 <TableHead className='text-sm font-semibold text-gray-800'>Waktu Check In</TableHead>
                 <TableHead className='text-sm font-semibold text-gray-800'>Waktu Check Out</TableHead>
@@ -227,12 +227,13 @@ const AttendaceReport = async ({
               {list.map((att, idx) => {
                 return <TableRow key={att.id} className={`${att.isAbsent && att.dateString.localeCompare(moment().format('YYYY-MM-DD')) > -1 ? 'bg-gray-100' : ''}`}>
                   <TableCell className="font-medium">{idx + 1}.</TableCell>
-                  <TableCell className='text-center'>
-                    <div className='w-[50px] h-[50px] relative flex items-center justify-center'>
+                  <TableCell>{att.dateString}</TableCell>
+                  <TableCell>
+                    <div className='flex gap-2 justify-center items-center'>
                       {att.photoUrl !== '' && <Dialog>
                         <DialogTrigger asChild>
-                          <Button variant="ghost">
-                            <div className='relative w-[50px] h-[50px]'>
+                          <Button className='p-0' variant="ghost">
+                            <div className='relative w-[40px] h-[40px]'>
                               <Image
                                 fill
                                 style={{ objectFit: 'contain' }}
@@ -263,11 +264,51 @@ const AttendaceReport = async ({
                           </DialogFooter>
                         </DialogContent>
                       </Dialog>}
+                      <div>
+                        {att.checkInTimeString}
+                      </div>
+
                     </div>
                   </TableCell>
-                  <TableCell>{att.dateString}</TableCell>
-                  <TableCell>{att.checkInTimeString}</TableCell>
-                  <TableCell>{att.checkOutTimeString}</TableCell>
+                  <TableCell>
+                    <div className='flex gap-2 justify-center items-center'>
+                      {att.photoUrlCheckout && <Dialog>
+                        <DialogTrigger asChild>
+                          <Button className='p-0' variant="ghost">
+                            <div className='relative w-[40px] h-[40px]'>
+                              <Image
+                                fill
+                                style={{ objectFit: 'contain' }}
+                                src={att.photoUrlCheckout}
+                                alt={att?.user?.name as string}
+                              />
+                            </div>
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[425px]">
+                          <DialogHeader>
+                            <DialogTitle>Detail Photo</DialogTitle>
+                            <DialogDescription className='w-full h-full flex items-center justify-center'>
+                              <div className='w-[300px] h-[400px] relative'>
+                                <Image
+                                  fill
+                                  style={{ objectFit: 'contain' }}
+                                  src={att.photoUrlCheckout}
+                                  alt={att?.user?.name as string}
+                                />
+                              </div>
+                            </DialogDescription>
+                          </DialogHeader>
+                          <DialogFooter>
+                            <DialogClose>
+                              <Button type="submit">Tutup</Button>
+                            </DialogClose>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>}
+                      <div>{att.checkOutTimeString}</div>
+                    </div>
+                  </TableCell>
                   <TableCell>{att?.isAbsent || !att.checkOutTimeString ? '' : `${att?.duration?.hours} jam ${att?.duration?.minutes} menit`}</TableCell>
                   <TableCell className={`${att.isLate ? 'text-red-500' : ''}`}>{att?.isAbsent ? '' : `${att?.lateDuration?.hours} jam ${att?.lateDuration?.minutes} menit`}</TableCell>
                 </TableRow>
