@@ -77,8 +77,8 @@ const AttendanceForm = ({
                 </Button>
               </DialogTrigger>
 
-              <DialogContent className="p-0">
-                <div className="w-full h-full">
+              <DialogContent className="p-0 overflow-hidden">
+                <div className="w-full h-full overflow-hidden">
                   <WebcamCapture
                     onCapture={(imgUri: string) => handleCapture(imgUri)}
                   />
