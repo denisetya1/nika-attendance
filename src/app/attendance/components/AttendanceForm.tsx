@@ -10,6 +10,7 @@ import moment from "moment"
 import Image from "next/image"
 import { checkInAttendance } from "@/services/attendance"
 import { useFormState } from "react-dom"
+import ButtonIndicator from "@/components/ButtonIndicator"
 
 const AttendanceForm = ({
   currentDate,
@@ -87,11 +88,13 @@ const AttendanceForm = ({
             </Dialog>
           </div>
           <div>
-            <Button
+            <ButtonIndicator
               className="w-full p-8"
-              disabled={imgUri === ''}
               type="submit"
-            >Check In</Button>
+              text="Check In"
+              disabled={imgUri === ''}
+              pendingText="Memproses..."
+            />
           </div>
         </CardContent>
       </Card >

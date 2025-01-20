@@ -1,16 +1,13 @@
-import { Button } from '@/components/ui/button'
 import React from 'react'
-import LogoutButton from './components/LogoutButton'
+import Header from '@/components/Header'
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className='bg-gray-100 w-screen h-screen flex relative'>
-      <div className='header absolute top-0 left-0 w-full p-6 border-b-[1px] border-s-slate-500 bg-white
-        flex items-end justify-end
-      '>
-        <LogoutButton />
+      <Header />
+      <div className='w-full mt-[80px]'>
+        {children}
       </div>
-      {children}
     </div>
   )
 }
