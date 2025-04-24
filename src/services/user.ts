@@ -41,6 +41,17 @@ export const addUser = async (prevState: unknown, formData: FormData) => {
 
   const { name, email, password } = validateFields.data;
 
+  const checkEmail = await prisma.user.findUnique({
+    where: {
+      email
+    }
+  })
+  if (checkEmail) {
+    return {
+      message: "Email sudah terdaftar!"
+    }
+  }
+
   try {
     await prisma.user.create({
       data: {
@@ -53,7 +64,7 @@ export const addUser = async (prevState: unknown, formData: FormData) => {
     console.error(error);
 
     return {
-      message: "Pendaftaran gagal!"
+      message: `Pendaftaran gagal! <br /> ${error}.`
     }
   }
 
