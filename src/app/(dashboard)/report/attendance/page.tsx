@@ -126,6 +126,7 @@ const AttendaceReport = async ({
           checkInTimeString: '--:--:--',
           checkOutTimeString: '--:--:--',
           photoUrl: '',
+          photoUrlCheckout: '',
           isAbsent: true,
         });
 
